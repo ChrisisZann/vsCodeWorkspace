@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+create_pid()
+{
+    PROCESS_NAME=$1
+    PID_DIR=$2
+
+
+}
+
+print_log_message()
+{
+    echo "========================================================"
+    echo "Timestamp : $(date +'%y%m%d_%H%M%S ')"
+    echo "Severity : $1"
+    echo "Message : $2"
+    echo "========================================================"
+}
+
+print_par()
+{
+    echo "[$1=$2]"
+}

@@ -1,0 +1,21 @@
+{
+    "configurations": [
+      {
+        "name": "Mac",
+        "includePath": [
+          "${workspaceFolder}/**",
+          "/usr/local/include/postgresql" // Replace with the actual path to your PostgreSQL include folder
+        ],
+        "defines": [],
+        "macFrameworkPath": [
+          "/Library/PostgreSQL/{version}/lib" // Replace {version} with the PostgreSQL version you have installed, e.g., 13
+        ],
+        "compilerPath": "/usr/bin/gcc", // Replace with the actual path to your GCC compiler
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "clang-x64"
+      }
+    ],
+    "version": 4
+  }
+  
