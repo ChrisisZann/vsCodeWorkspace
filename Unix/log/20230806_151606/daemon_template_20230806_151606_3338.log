@@ -1,0 +1,63 @@
+========================================================
+= Log Started 230806_151606  ===========================
+========================================================
+Timestamp : 230806_151606 
+Severity : INFO
+Message : Started create_pid_file function
+========================================================
+[create_pid_file $$=3338]
+[input pid=3338]
+Timestamp : 230806_151606 
+Severity : INFO
+Message : PID file created succesfully, PID=3338
+========================================================
+Timestamp : 230806_151606 
+Severity : INFO
+Message : Finished create_pid_file function
+========================================================
+Timestamp : 230806_151606 
+Severity : INFO
+Message : PID=3338
+========================================================
+./daemon_template.sh: line 91: ./bin/make: No such file or directory
+========================================================
+Timestamp : 230806_151606 
+Severity : INFO
+Message : Running C executable
+========================================================
+./daemon_template.sh: line 69: ./inner: No such file or directory
+Timestamp : 230806_151616 
+Severity : INFO
+Message : Running C executable
+========================================================
+./daemon_template.sh: line 69: ./inner: No such file or directory
+Timestamp : 230806_151626 
+Severity : INFO
+Message : Running C executable
+========================================================
+./daemon_template.sh: line 69: ./inner: No such file or directory
+Timestamp : 230806_151636 
+Severity : INFO
+Message : Running C executable
+========================================================
+./daemon_template.sh: line 69: ./inner: No such file or directory
+Timestamp : 230806_151641 
+Severity : WARN
+Message : Received SIGINT, stopping the process
+========================================================
+Timestamp : 230806_151641 
+Severity : INFO
+Message : Started delete_pid_file function
+========================================================
+Timestamp : 230806_151641 
+Severity : INFO
+Message : deleting PID file: ./work/20230806_151606/daemon_template.pid
+========================================================
+Timestamp : 230806_151641 
+Severity : INFO
+Message : Daemon daemon_template has stopped
+========================================================
+Timestamp : 230806_151641 
+Severity : INFO
+Message : Process Ended
+========================================================
