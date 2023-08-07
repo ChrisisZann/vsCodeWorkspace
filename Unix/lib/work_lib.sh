@@ -4,6 +4,6 @@ init_work()
 {
     if [[ ! -d "$WORK_DIR" ]];
     then 
-        mkdir "$WORK_DIR"
+        mkdir -p "$WORK_DIR"
     fi
 }

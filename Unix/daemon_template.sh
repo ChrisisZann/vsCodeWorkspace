@@ -5,6 +5,7 @@ DATETIME=$(date +'%Y%m%d_%H%M%S')
 
 # Setup Directories
 export LIB_DIR="./lib"
+export BIN_DIR="./bin"
 export LOG_DIR="./log/$DATETIME"
 export WORK_DIR="./work/$DATETIME"
 export BNAME="$(basename -s ".sh" $0)"
@@ -33,29 +34,53 @@ print_par LOG_FILE "$LOG_FILE"
 read_input()
 {
     while getopts "sp:" opt_flag; do
-   
-    echo "[OPTIND=$OPTIND]"
-    echo "[OPTARG=$OPTARG]"
     
-    case "${opt_flag}" in
-        s)
-            echo "flag -s is set"
-            ;;
-        p)
-            echo "flag -p is set"
-            echo "argument : ${OPTARG}"
-            ;;
-        *)
-            usage
-            ;;
-    esac
+        # echo "[OPTIND=$OPTIND]"
+        # echo "[OPTARG=$OPTARG]"
+        case "${opt_flag}" in
+            s)
+                echo "flag -s is set"
+                FLAG_1=TRUE
+                ;;
+            p)
+                echo "flag -p is set"
+                export ARGUMENT_2=${OPTARG}
+                echo "argument : ${OPTARG}"
+                ;;
+            *)
+                usage
+                ;;
+        esac
     done
+
+    # Mandatory arguments
+    if [ -z "${FLAG_1}" ];
+    then
+    print_par FLAG_1 "${FLAG_1}"
+        echo "FLAG_1 must be set"
+        exit 1
+    fi
+    if [ -z "${ARGUMENT_2}" ];
+    then
+        echo "ARGUMENT_2 must be set"
+        exit 1
+    fi
+}
+
+SIGINT_handler()
+{
+    INPUT_PID=$$
+    print_log_message "WARN" "Received SIGINT, stopping the process"
+    delete_pid_file
 }
 
 daemon_loop()
 {
     while [ -f $PID_FILE ]; do
-        print_log_message INFO "Process is still running"
+        # print_log_message INFO "Process is still running"
+        print_log_message INFO "Running C executable"
+        ./${BIN_DIR}/inner
+
         sleep 10
         # echo $(date +"The Process [$$] says: The current date and time is %F %T")
     done
@@ -69,12 +94,15 @@ init_log "$LOG_DIR" "$LOG_FILE"
     # Initializations
     init_work
     create_pid_file "$$"
-    print_log_message INFO "PID=$$"
-    read_input
+    read_input $*
 
     # Signal Handling
-    trap 'delete_pid_file;' INT
+    trap 'SIGINT_handler;' INT
 
+    # Compile C
+    (cd ${BIN_DIR}&& make)
+    print_log_divider
+    
     daemon_loop
 
     # Exit daemon

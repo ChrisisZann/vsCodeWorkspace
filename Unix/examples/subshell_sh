@@ -1,0 +1,7 @@
+#!/bin/bash
+
+(cd /other/dir && make)
+
+# will not change your shell's current directory (because the brackets contents are run in a subshell), but will run make with the indicated working directory.
+
+# The && will ensure that make doesn't run if there's an error in the cd part of the command (e.g., the directory doesn't exist, or you don't have access to it).

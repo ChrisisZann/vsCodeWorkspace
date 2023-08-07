@@ -59,6 +59,8 @@ delete_pid_file()
     print_log_message "INFO" "Daemon $BNAME has stopped"
 }
 
+
+
 stop()
 {
     INPUT_PID=$$

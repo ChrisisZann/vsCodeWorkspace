@@ -4,7 +4,7 @@ init_log()
 {
     if [[ ! -d "$LOG_DIR" ]];
     then 
-        mkdir "$LOG_DIR"
+        mkdir -p "$LOG_DIR"
     fi
     {
         echo "========================================================"
