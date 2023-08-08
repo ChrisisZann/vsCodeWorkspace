@@ -8,7 +8,7 @@ export LIB_DIR="./lib"
 export BIN_DIR="./bin"
 export LOG_DIR="./log/$DATETIME"
 export WORK_DIR="./work/$DATETIME"
-export BNAME="$(basename -s ".sh" $0)"
+export  ="$(basename -s ".sh" $0)"
 
 # Setup Filenames 
 export LOG_FILE="$LOG_DIR/${BNAME}_${DATETIME}_$$.log"
@@ -31,6 +31,23 @@ print_par LOG_FILE "$LOG_FILE"
 
 #  FUNCTIONS
 # ========================================================
+exit_daemon()
+{
+    case $1 in
+    1)  
+        usage
+        exit 1
+        ;;
+    *)
+    ;;
+    esac
+}
+
+usage()
+{
+    print_log_message ERROR "wrong usage"
+}
+
 read_input()
 {
     while getopts "sp:" opt_flag; do
@@ -47,6 +64,9 @@ read_input()
                 export ARGUMENT_2=${OPTARG}
                 echo "argument : ${OPTARG}"
                 ;;
+            d) echo "flag -d is set"
+                DEBUG=TRUE
+                ;;
             *)
                 usage
                 ;;
@@ -56,14 +76,13 @@ read_input()
     # Mandatory arguments
     if [ -z "${FLAG_1}" ];
     then
-    print_par FLAG_1 "${FLAG_1}"
-        echo "FLAG_1 must be set"
-        exit 1
+        print_log_message INFO "FLAG_1 is mandatory"
+        exit_daemon 1
     fi
     if [ -z "${ARGUMENT_2}" ];
     then
-        echo "ARGUMENT_2 must be set"
-        exit 1
+        print_log_message INFO "ARGUMENT_2 is mandatory"
+        exit_daemon 1
     fi
 }
 
@@ -72,6 +91,14 @@ SIGINT_handler()
     INPUT_PID=$$
     print_log_message "WARN" "Received SIGINT, stopping the process"
     delete_pid_file
+    rm -r work
+}
+SIGTERM_handler()
+{
+    INPUT_PID=$$
+    print_log_message "WARN" "Received SIGTERM, stopping the process"
+    delete_pid_file
+    rm -r work
 }
 
 daemon_loop()
@@ -98,12 +125,16 @@ init_log "$LOG_DIR" "$LOG_FILE"
 
     # Signal Handling
     trap 'SIGINT_handler;' INT
+    trap 'SIGTERM_handler;' SIGTERM
 
     # Compile C
-    (cd ${BIN_DIR}&& make)
+    (cd ${BIN_DIR} && make)
     print_log_divider
-    
+
+    # Daemon Main Loop
     daemon_loop
+
+    print_log_message WARN "PID file was deleted" 
 
     # Exit daemon
     print_log_message INFO "Process Ended" 

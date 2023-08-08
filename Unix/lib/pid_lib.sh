@@ -45,10 +45,19 @@ create_pid_file()
 
 delete_pid_file()
 {
-    INPUT_PID=$$
+    if [ -z $1 ]
+    then
+        PID_FILE=$$
+    else
+        PID_FILE=$1
+    fi
+    # print_par INPUT_PID $INPUT_PID
+    # TODO work with pid_id not pid_file
+    
     print_log_message "INFO" "Started delete_pid_file function"
+    print_par INPUT_PID_FILE $INPUT_PID_FILE
 
-    if [ -f $PID_FILE ]
+    if [ -f $INPUT_PID_FILE ]
     then
         print_log_message "INFO" "deleting PID file: $PID_FILE"
         rm $PID_FILE
@@ -56,9 +65,8 @@ delete_pid_file()
         print_log_message "INFO" "PID file not found: $PID_FILE "
     fi
 
-    print_log_message "INFO" "Daemon $BNAME has stopped"
+    # print_log_message "INFO" "Daemon $BNAME has stopped"
 }
-
 
 
 stop()

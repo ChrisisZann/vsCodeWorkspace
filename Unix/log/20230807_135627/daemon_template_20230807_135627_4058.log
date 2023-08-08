@@ -1,0 +1,86 @@
++ echo ========================================================
+========================================================
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo '= Log Started 230807_135627  ==========================='
+= Log Started 230807_135627  ===========================
++ echo ========================================================
+========================================================
++ init_work
++ [[ ! -d ./work/20230807_135627 ]]
++ mkdir -p ./work/20230807_135627
++ create_pid_file 4058
++ INPUT_PID=4058
++ print_log_message INFO 'Started create_pid_file function'
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo 'Timestamp : 230807_135627 '
+Timestamp : 230807_135627 
++ echo 'Severity : INFO'
+Severity : INFO
++ echo 'Message : Started create_pid_file function'
+Message : Started create_pid_file function
++ echo ========================================================
+========================================================
++ print_par 'create_pid_file $$' 4058
++ echo '[create_pid_file $$=4058]'
+[create_pid_file $$=4058]
++ print_par 'input pid' 4058
++ echo '[input pid=4058]'
+[input pid=4058]
++ '[' -f ./work/20230807_135627/daemon_template.pid ']'
++ echo 4058
++ '[' 0 -ne 0 ']'
+cat $PID_FILE
+++ cat ./work/20230807_135627/daemon_template.pid
++ print_log_message INFO 'PID file created succesfully, PID=4058'
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo 'Timestamp : 230807_135627 '
+Timestamp : 230807_135627 
++ echo 'Severity : INFO'
+Severity : INFO
++ echo 'Message : PID file created succesfully, PID=4058'
+Message : PID file created succesfully, PID=4058
++ echo ========================================================
+========================================================
++ print_log_message INFO 'Finished create_pid_file function'
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo 'Timestamp : 230807_135627 '
+Timestamp : 230807_135627 
++ echo 'Severity : INFO'
+Severity : INFO
++ echo 'Message : Finished create_pid_file function'
+Message : Finished create_pid_file function
++ echo ========================================================
+========================================================
++ read_input
++ getopts sp: opt_flag
++ '[' -z '' ']'
++ print_log_message INFO 'FLAG_1 is mandatory'
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo 'Timestamp : 230807_135627 '
+Timestamp : 230807_135627 
++ echo 'Severity : INFO'
+Severity : INFO
++ echo 'Message : FLAG_1 is mandatory'
+Message : FLAG_1 is mandatory
++ echo ========================================================
+========================================================
++ exit_daemon 1
++ case $1 in
++ usage
++ print_log_message ERROR 'wrong usage'
+date +'%y%m%d_%H%M%S '
+++ date '+%y%m%d_%H%M%S '
++ echo 'Timestamp : 230807_135627 '
+Timestamp : 230807_135627 
++ echo 'Severity : ERROR'
+Severity : ERROR
++ echo 'Message : wrong usage'
+Message : wrong usage
++ echo ========================================================
+========================================================
++ exit 1

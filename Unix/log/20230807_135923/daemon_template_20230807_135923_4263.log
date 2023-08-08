@@ -1,0 +1,58 @@
+========================================================
+= Log Started 230807_135923  ===========================
+========================================================
+Timestamp : 230807_135923 
+Severity : INFO
+Message : Started create_pid_file function
+========================================================
+[create_pid_file $$=4263]
+[input pid=4263]
+Timestamp : 230807_135923 
+Severity : INFO
+Message : PID file created succesfully, PID=4263
+========================================================
+Timestamp : 230807_135923 
+Severity : INFO
+Message : Finished create_pid_file function
+========================================================
+flag -s is set
+flag -p is set
+argument : TEST
+gcc inner.o -o inner
+========================================================
+Timestamp : 230807_135923 
+Severity : INFO
+Message : Running C executable
+========================================================
+Hello ThereTimestamp : 230807_135923 
+Severity : INFO
+Message : Started delete_pid_file function
+========================================================
+Timestamp : 230807_135923 
+Severity : INFO
+Message : deleting PID file: ./work/20230807_135923/daemon_template.pid
+========================================================
+Timestamp : 230807_135923 
+Severity : INFO
+Message : Daemon daemon_template has stopped
+========================================================
+Timestamp : 230807_135925 
+Severity : WARN
+Message : Received SIGINT, stopping the process
+========================================================
+Timestamp : 230807_135925 
+Severity : INFO
+Message : Started delete_pid_file function
+========================================================
+Timestamp : 230807_135925 
+Severity : INFO
+Message : PID file not found: ./work/20230807_135923/daemon_template.pid 
+========================================================
+Timestamp : 230807_135925 
+Severity : INFO
+Message : Daemon daemon_template has stopped
+========================================================
+Timestamp : 230807_135925 
+Severity : INFO
+Message : Process Ended
+========================================================
