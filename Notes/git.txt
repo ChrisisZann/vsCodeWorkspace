@@ -1,0 +1,20 @@
+The global git username and email address are associated with commits on all repositories on your system that don’t have repository-specific values.
+
+To set your global commit name and email address run the git config command with the --global option:
+
+git config --global user.name "ChrisisZann"
+git config --global user.email "chrisis.zann@gmail.com"
+
+Once done, you can confirm that the information is set by running:
+
+git config --list
+
+user.name=Your Name
+user.email=youremail@yourdomain.com
+
+The command saves the values in the global configuration file, ~/.gitconfig:
+~/.gitconfig
+
+[user]
+    name = Your Name
+    email = youremail@yourdomain.com
