@@ -1,0 +1,106 @@
+#!/bin/bash
+# ./install_postgres.sh -p your_password -d /var/lib/pgsql/data/pg_hba.conf
+# /var/lib/pgsql/data/pg_hba.conf
+# sudo sed -i 's/ident/scram-sha-256/' pg_hba.conf
+# sudo sed -i 's/md5/scram-sha-256/' pg_hba.conf
+#
+# Variables with default values
+LOGFILE="postgres_install.log"
+PASSWORD=""
+PG_DATA_DIR=""
+PG_HBA_CONF=""
+
+# Function to display script usage
+function show_usage {
+    echo "Usage: $0 [-h] -p <password> -d <data_directory>"
+    echo "Options:"
+    echo "  -h   Display this help message"
+    echo "  -p   Password for the 'postgres' user"
+    echo "  -d   PostgreSQL data directory"
+}
+
+# Function to exit the script with an error message
+function exit_with_error {
+    echo "Error: $1"
+    exit 1
+}
+
+# Parse command-line options using getopts
+while getopts ":hp:d:" opt; do
+    case $opt in
+        h)
+            show_usage
+            exit 0
+            ;;
+        p)
+            PASSWORD="$OPTARG"
+            ;;
+        d)
+            PG_DATA_DIR="$OPTARG"
+            PG_HBA_CONF="$PG_DATA_DIR/pg_hba.conf"
+            ;;
+        \?)
+            exit_with_error "Invalid option: -$OPTARG"
+            ;;
+        :)
+            exit_with_error "Option -$OPTARG requires an argument."
+            ;;
+    esac
+done
+
+# Check if required arguments are provided
+if [ -z "$PASSWORD" ] || [ -z "$PG_DATA_DIR" ]; then
+    exit_with_error "Password and data directory are required."
+fi
+
+# Run all commands within a single { } block
+{
+    # Step 1: Update system packages
+    echo "Step 1: Updating system packages..."
+    sudo dnf update -y
+    if [ $? -ne 0 ]; then
+        exit_with_error "Step 1 failed: Unable to update system packages."
+    fi
+    echo "Step 1 completed."
+
+    # Step 2: Install PostgreSQL 15
+    echo "Step 2: Installing PostgreSQL 15..."
+    sudo dnf install -y postgresql-server
+    if [ $? -ne 0 ]; then
+        exit_with_error "Step 2 failed: Unable to install PostgreSQL."
+    fi
+    echo "Step 2 completed."
+
+    # Step 3: Initialize PostgreSQL database and start service
+    echo "Step 3: Initializing PostgreSQL database and starting service..."
+    sudo postgresql-setup --initdb
+    sudo systemctl start postgresql
+    sudo systemctl enable postgresql
+    if [ $? -ne 0 ]; then
+        exit_with_error "Step 3 failed: Unable to initialize database or start service."
+    fi
+    echo "Step 3 completed."
+
+    # Step 4: Set PostgreSQL 'postgres' user password and update authentication configuration
+    echo "Step 4: Setting PostgreSQL 'postgres' user password and updating authentication configuration..."
+    sudo -u postgres psql -c "ALTER USER postgres PASSWORD '$PASSWORD';"
+    # sudo sed -i 's/ident/md5/' "$PG_HBA_CONF"
+    sudo sed -i 's/ident/scram-sha-256/' "$PG_HBA_CONF"
+    sudo systemctl restart postgresql
+    if [ $? -ne 0 ]; then
+        exit_with_error "Step 4 failed: Unable to set password or update authentication."
+    fi
+    echo "Step 4 completed."
+
+    # Step 5: Test connection to PostgreSQL server
+    echo "Step 5: Testing connection to PostgreSQL server..."
+    psql -U postgres -h localhost -c "SELECT version();"
+    if [ $? -ne 0 ]; then
+        exit_with_error "Step 5 failed: Unable to test connection to PostgreSQL."
+    fi
+    echo "Step 5 completed."
+
+} >> "$LOGFILE" 2>&1
+
+# Output completion message
+echo "PostgreSQL 15 installation and configuration completed. Check $LOGFILE for details."
